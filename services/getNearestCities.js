@@ -1,12 +1,10 @@
-import filterDistancesByCity from './filterDistancesByCity.js'
+import filterNearestCities from './filterNearestCitiesFromDistancesArray.js'
+import getDistancesArray from './getDistancesArray.js'
 
-const nearestCities = ({ distancesArray, cityName, nearestCount }) => {
-	const distances = filterDistancesByCity(distancesArray, cityName)
-	const array = distances
-		.sort((a, b) => a.distance - b.distance)
-		.splice(0, nearestCount)
-
-	return array 
+const getNearestCities = async (state, city, count) => {
+	const distancesArray = await getDistancesArray(state)
+	const closestCities = filterNearestCities({ distancesArray, cityName: city, nearestCount: count })
+	return closestCities
 }
 
-export default nearestCities
+export default getNearestCities

@@ -1,12 +1,10 @@
 const getDistance = ({ distances, nameCityA, nameCityB }) => {
 	const distanceObj = distances.find((obj) => {
 		const { cityA, cityB } = obj
-		const { nm_municipio: municipioA } = cityA
-		const { nm_municipio: municipioB } = cityB
 		if(
-			(municipioA === nameCityA && municipioB === nameCityB)
+			(cityA === nameCityA && cityB === nameCityB)
       ||
-      (municipioB === nameCityA && municipioA === nameCityB)
+      (cityB === nameCityA && cityA === nameCityB)
 		)
 		{
 			return true

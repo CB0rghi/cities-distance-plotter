@@ -30,8 +30,34 @@ export const getDistanceFromTwoCities = ({ cityA, cityB }) => {
 	return getDistanceFromTwoPoints({ latA, latB, longA, longB })
 }
 
+// 1 2 3 4 5 
+//leftCity = 1
+//rightCity = 5
+
+//1
+// 2 3 4 5
+
+//5
+// 2 3 4
+
+//1 -> 2; 1 -> 3; 1 ->4 ; 1 -> 5
+//5 -> 2; 5 -> 3; 5 -> 4
+
 export const calculateDistancesArray = (cities) => {
 	const distancesArray = []
+	const addDistance = (distance, cityA, cityB) => {
+		const distanceObj = {
+			cityA: cityA.nm_municipio,
+			cityB: cityB.nm_municipio,
+			latA: cityA.lat_municipio,
+			longA: cityA.long_municipio,
+			latB: cityB.lat_municipio,
+			longB: cityB.long_municipio,
+			distance 
+		}
+		distancesArray.push(distanceObj)
+	}
+
 	let lastPosition = cities.length - 1
 	const middle = lastPosition / 2
 	for(let i = 0; i <= middle; i++) {
@@ -39,22 +65,11 @@ export const calculateDistancesArray = (cities) => {
 		const rightCity = cities[lastPosition - i]
 		for(let j = i + 1; j <= lastPosition; j++) {
 			const comparableCity = cities[j]
-			const leftDistance =
-      getDistanceFromTwoCities({ cityA: leftCity, cityB: comparableCity })
-			const leftDistanceObj = {
-				cityA: leftCity.nm_municipio,
-				cityB: comparableCity.nm_municipio,
-				distance: leftDistance
-			}
-			distancesArray.push(leftDistanceObj)
+			const leftDistance = getDistanceFromTwoCities({ cityA: leftCity, cityB: comparableCity })
+			addDistance(leftDistance, leftCity, comparableCity)
 			if(j < lastPosition) {
 				const rightDistance = getDistanceFromTwoCities({ cityA: rightCity, cityB: comparableCity })
-				const rightDistanceObj = {
-					cityA: rightCity.nm_municipio,
-					cityB: comparableCity.nm_municipio,
-					distance: rightDistance
-				}
-				distancesArray.push(rightDistanceObj)
+				addDistance(rightDistance, rightCity, comparableCity)
 			}
 		}
 		lastPosition--

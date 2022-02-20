@@ -1,11 +1,12 @@
 const filterDistancesByCity = (distances, name) => {
-	return distances.filter((distance) => {
-		const { cityA, cityB } = distance
-		if(cityA === name || cityB === name)
-			return true
+  return distances.filter(distance => {
+    const { cityA, cityB } = distance;
 
-		return false
-	})
-}
+    let foundCity = cityA === name || cityB === name;
+    let citiesAreDifferent = cityA !== cityB;
 
-export default filterDistancesByCity
+    return foundCity && citiesAreDifferent;
+  });
+};
+
+export default filterDistancesByCity;

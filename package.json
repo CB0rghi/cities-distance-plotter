@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "serve": "node server.js",
-    "test": "curl "
+    "test": "curl localhost:3010/nearest-cities/Piracicaba/10"
   },
   "repository": {
     "type": "git",

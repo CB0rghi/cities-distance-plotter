@@ -43,36 +43,55 @@ export const getDistanceFromTwoCities = ({ cityA, cityB }) => {
 //1 -> 2; 1 -> 3; 1 ->4 ; 1 -> 5
 //5 -> 2; 5 -> 3; 5 -> 4
 
-export const calculateDistancesArray = (cities) => {
-	const distancesArray = []
-	const addDistance = (distance, cityA, cityB) => {
-		const distanceObj = {
-			cityA: cityA.nm_municipio,
-			cityB: cityB.nm_municipio,
-			latA: cityA.lat_municipio,
-			longA: cityA.long_municipio,
-			latB: cityB.lat_municipio,
-			longB: cityB.long_municipio,
-			distance 
-		}
-		distancesArray.push(distanceObj)
+const addDistance = (distancesArray, distance, cityA, cityB) => {
+	const distanceObj = {
+		cityA: cityA.nm_municipio,
+		cityB: cityB.nm_municipio,
+		latA: cityA.lat_municipio,
+		longA: cityA.long_municipio,
+		latB: cityB.lat_municipio,
+		longB: cityB.long_municipio,
+		distance 
 	}
-
+	distancesArray.push(distanceObj)
+}
+const halfIteractions = (cities) => {
+	const distancesArray = []
 	let lastPosition = cities.length - 1
 	const middle = lastPosition / 2
 	for(let i = 0; i <= middle; i++) {
 		const leftCity = cities[i]
-		const rightCity = cities[lastPosition - i]
+		const rightCity = cities[lastPosition]
 		for(let j = i + 1; j <= lastPosition; j++) {
 			const comparableCity = cities[j]
 			const leftDistance = getDistanceFromTwoCities({ cityA: leftCity, cityB: comparableCity })
-			addDistance(leftDistance, leftCity, comparableCity)
+			addDistance(distancesArray, leftDistance, leftCity, comparableCity)
 			if(j < lastPosition) {
 				const rightDistance = getDistanceFromTwoCities({ cityA: rightCity, cityB: comparableCity })
-				addDistance(rightDistance, rightCity, comparableCity)
+				addDistance(distancesArray, rightDistance, rightCity, comparableCity)
 			}
 		}
 		lastPosition--
 	}
 	return distancesArray
+}
+
+// eslint-disable-next-line no-unused-vars
+const n2Iterations = (cities) => {
+	const distancesArray = []
+	for(let i = 0; i < cities.length - 1; i++) {
+		const fixed = cities[i]
+		for(let j = i + 1; j < cities.length; j++) {
+			const comparable = cities[j]
+			const distance = getDistanceFromTwoCities({ cityA: fixed, cityB: comparable })			
+			addDistance(distancesArray, distance, fixed, comparable)
+		}
+	}
+	return distancesArray
+}
+
+export const calculateDistancesArray = (cities) => {
+	const halfIteractionsArray = halfIteractions(cities)	
+	// const n2IterationsArray = n2Iterations(cities)
+	return halfIteractionsArray
 }

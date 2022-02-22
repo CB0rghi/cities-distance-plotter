@@ -30,19 +30,6 @@ export const getDistanceFromTwoCities = ({ cityA, cityB }) => {
 	return getDistanceFromTwoPoints({ latA, latB, longA, longB })
 }
 
-// 1 2 3 4 5 
-//leftCity = 1
-//rightCity = 5
-
-//1
-// 2 3 4 5
-
-//5
-// 2 3 4
-
-//1 -> 2; 1 -> 3; 1 ->4 ; 1 -> 5
-//5 -> 2; 5 -> 3; 5 -> 4
-
 export const calculateDistancesArray = (cities) => {
 	const distancesArray = []
 	const addDistance = (distance, cityA, cityB) => {
@@ -88,10 +75,10 @@ export const calculateDistancesArray = (cities) => {
 		const leftCity = cities[leftInnerPointer]
 		const leftDistance = getDistanceFromTwoCities({ cityA: leftMainCity, cityB: leftCity })
 		addDistance(leftDistance, leftMainCity, leftCity)
-    
+
 		leftMainPointer  ++
 		rightMainPointer --
 	}
-	
+
 	return distancesArray
 }

@@ -3,19 +3,21 @@ import useCityStore from '../../stores/cityStore'
 import { getNearestCities } from '../../services/city.js'
 
 const Main = () => {
-  const [city, setCity] = useState('')
   const [nearestCount, setNearestCount] = useState(10)
-  const setCities = useCityStore(state => state.setCities)
+  const { selectedCity, selectCity } = useCityStore(state => ({selectCity: state.selectCity, selectedCity: state.selectedCity}))
+  const setDistances = useCityStore(state => state.setDistances)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const response = await getNearestCities('SP', city, nearestCount)
-    setCities(response)
+    console.log('City', selectedCity)
+    const response = await getNearestCities('SP', selectedCity, nearestCount)
+    console.log('Response', response)
+    setDistances(response)
   }
 
   return (
     <div className="w-full max-w-xs">
-      <form onSubmit={handleSubmit} className="bg-teal-400 shadow-md rounded p-8">
+      <form onSubmit={handleSubmit} className="bg-teal-400 shadow-md rounded p-4">
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="city">
             Cidade 
@@ -25,8 +27,8 @@ const Main = () => {
             id="city"
             type="text"
             placeholder="Selecione a cidade!"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}/>
+            value={selectedCity}
+            onChange={(e) => selectCity(e.target.value)}/>
         </div>
         <div className="mb-6">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="nearestCount">

@@ -1,10 +1,12 @@
 import create from 'zustand'
 
 const useCityStore = create(set => ({
-  cities: [],
+  distances: [],
 
+  selectedCity: '',
   clear: () => set({cities: []}),
-  setCities: (cities) => set(state => ({ ...state, cities }))
+  selectCity: (city) => set(state => ({...state, selectedCity: city})),
+  setDistances: (distances) => set(state => ({ ...state, distances }))
 }))
 
 export default useCityStore

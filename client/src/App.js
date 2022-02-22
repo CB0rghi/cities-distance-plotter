@@ -4,15 +4,15 @@ import NearestCitiesForm from './components/NearestCitiesForm/Index';
 import NearestCitiesPlotter from './components/NearestCitiesPlotter/NearestCitiesPlotter'
 import useCityStore from './stores/cityStore';
 function App() {
-  const cities = useCityStore(state => state.cities)
+  const distances = useCityStore(state => state.distances)
   useEffect(() => {
-    console.log('Cities were changed', cities)
-  }, [cities])
+    console.log('Cities were changed', distances)
+  }, [distances])
   return (
-    <>
-    <NearestCitiesForm/>
-    <NearestCitiesPlotter cities={cities}/>
-    </>
+    <div className='h-screen w-fullflex'>
+      <NearestCitiesForm className='w-full h-full'/>
+      <NearestCitiesPlotter distances={distances}/>
+    </div>
   );
 }
 

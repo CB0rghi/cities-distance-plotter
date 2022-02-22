@@ -45,10 +45,11 @@ const CitiesPlotter = (props) => {
     if(distances.length === 0) return
 
     let leftCount = 0, rightCount = 0
-    const baseX = 350 
-    const baseY = 25
-    const dislocationX = 180
-    const dislocationY = 100
+    let line = 1
+    const baseX = 450 
+    const baseY = 10
+    const dislocationX = 170
+    const dislocationY = 70
     const maxPerLine = 4
 
     const secondaryElements = distances.map((distance, index) => {
@@ -56,15 +57,15 @@ const CitiesPlotter = (props) => {
       const otherCity = getOtherCityName(cityA, cityB)
       const getPosition = (id) => {
         let xPos = 0
-        if((id - 1) % maxPerLine === 0)
+        
+        if(((id - 1) % maxPerLine) === 0)
         {
-          console.log('Resetou', id)
           leftCount = 0
           rightCount = 0
+          line++
         }
 
-        const currentLine = parseInt(id/(maxPerLine + 1))
-        const yPos = currentLine > 0 ? (currentLine + 1) * dislocationY : dislocationY
+        const yPos = line > 1 ? (line) * dislocationY : dislocationY
         const multiplier = dislocationX
         if(isOdd(id)) {
           leftCount++

@@ -9,7 +9,7 @@ function App() {
     console.log('Cities were changed', distances)
   }, [distances])
   return (
-    <div className='h-screen w-fullflex'>
+    <div className='h-screen w-full flex'>
       <NearestCitiesForm className='w-full h-full'/>
       <NearestCitiesPlotter distances={distances}/>
     </div>

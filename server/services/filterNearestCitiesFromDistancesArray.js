@@ -6,7 +6,7 @@ const filterNearestCities = ({ distancesArray, cityName, nearestCount }) => {
 		.sort((a, b) => a.distance - b.distance)
 		.splice(0, nearestCount)
 
-	return array 
+	return array
 }
 
 export default filterNearestCities

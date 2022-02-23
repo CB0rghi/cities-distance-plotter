@@ -1,0 +1,19 @@
+{
+  "name": "cities-distance-plotter",
+  "version": "1.0.0",
+  "description": "The idea of this project is to, given an input of city name and number of nearest cities, mount a graph using dynamic programming and display it.",
+  "scripts": {
+    "serve": "cd server && npm run serve",
+    "start-client": "cd client && npm run start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CB0rghi/cities-distance-plotter.git"
+  },
+  "author": "Caio Borghi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CB0rghi/cities-distance-plotter/issues"
+  },
+  "homepage": "https://github.com/CB0rghi/cities-distance-plotter#readme"
+}

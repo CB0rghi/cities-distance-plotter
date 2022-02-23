@@ -70,7 +70,6 @@ const CitiesPlotter = (props) => {
     const nodes = [firstElement, ...secondaryElements]
 
     const edges = secondaryElements.map((element) => {
-
       return {
         id: `e0-${element.id}`,
         source: '0',

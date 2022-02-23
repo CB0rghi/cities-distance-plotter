@@ -1,12 +1,10 @@
 import { calculateDistancesArray } from './calculateDistance.js'
-import readFileContent from './readCsvFileContent.js'
-import filterCitiesByUF from './filterCitiesByUF.js'
 import saveDistancesToDisk from './saveDistancesToDisk.js'
+import getCitiesArray from './getCities.js'
 
 const buildDistancesArray = async (state) => {
-	const brazilCities = await readFileContent('brazil_cities.csv')
-	const spCities = filterCitiesByUF(brazilCities, state)
-	const distancesArray = calculateDistancesArray(spCities)
+	const stateCities = await getCitiesArray(state)
+	const distancesArray = calculateDistancesArray(stateCities)
 	saveDistancesToDisk(distancesArray, state)
 	return distancesArray
 }

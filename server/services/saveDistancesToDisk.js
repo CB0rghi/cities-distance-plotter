@@ -1,12 +1,7 @@
-import pkg from 'convert-array-to-csv'
-const { convertArrayToCSV } = pkg
-import fs from 'fs'
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
-const __dirname = dirname(fileURLToPath(import.meta.url))
+import saveArrayToDisk from './saveArrayToDisk.js'
 
 const saveDistancesToDisk = (distancesArray, state) => {
-	const convertedString = convertArrayToCSV(distancesArray)
-	fs.writeFileSync(`${__dirname}/../data/distances/${state}.csv`, convertedString)
+	const dataPath = `distances/${state}.csv`
+	saveArrayToDisk(distancesArray, dataPath)
 }
 export default saveDistancesToDisk

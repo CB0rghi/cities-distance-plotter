@@ -1,38 +1,11 @@
-import { useEffect, useState } from "react"
-import { DefaultNode, Graph } from "@visx/network"
+import React, { useEffect, useState } from "react"
 import ReactFlow from 'react-flow-renderer'
 import useCityStore from "../../stores/cityStore";
-
-
-const fixed = [
-  {
-    id: '1',
-    type: 'input', // input node
-    data: { label: 'Input Node' },
-    position: { x: 250, y: 25 },
-  },
-  // default node
-  {
-    id: '2',
-    // you can also pass a React component as a label
-    data: { label: <div>Default Node</div> },
-    position: { x: 100, y: 125 },
-  },
-  {
-    id: '3',
-    type: 'output', // output node
-    data: { label: 'Output Node' },
-    position: { x: 250, y: 250 },
-  },
-  // animated edge
-  { id: 'e1-2', source: '1', target: '2', animated: true },
-  { id: 'e2-3', source: '2', target: '3' },
-];
 
 export const background = '#272b4d';
 const CitiesPlotter = (props) => {
   const { distances } = props
-  const selectedCity = useCityStore(state => state.selectedCity)
+  const { loading, selectedCity } = useCityStore(state => ({ selectedCity: state.selectedCity, loading: state.loading}))
   const [elements, setElements] = useState([])
 
   useEffect(() => {
@@ -47,9 +20,9 @@ const CitiesPlotter = (props) => {
     let leftCount = 0, rightCount = 0
     let line = 1
     const baseX = 450 
-    const baseY = 10
-    const dislocationX = 170
-    const dislocationY = 70
+    const baseY = 0
+    const dislocationX = 180
+    const dislocationY = 60
     const maxPerLine = 4
 
     const secondaryElements = distances.map((distance, index) => {
@@ -108,9 +81,14 @@ const CitiesPlotter = (props) => {
     setElements(elements)
   }, [distances, selectedCity])
 
+  const render = () => {
+    if(loading || elements.length === 0) return null
+    return <ReactFlow elements={elements} />
+  }
+
   return (
   <div className="w-full h-full">
-    {elements.length > 0 && <ReactFlow elements={elements} /> }
+    {render()}
   </div>
   )
 }

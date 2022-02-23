@@ -5,12 +5,10 @@ The idea of this project is to, given an input of city name and number of neares
 ## How to use
 * First, start the server
 ```
-cd server
 npm run serve
 ```
 
 * Then, in another terminal, start the client
 ```
-cd client
-npm run start
+npm run start-client
 ```

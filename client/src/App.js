@@ -18,13 +18,17 @@ function App() {
     <div className='h-screen w-full flex'>
       <NearestCitiesForm className='w-full h-full'/>
       
-      <div className='flex flex-col w-full h-full'>
-        <div className='flex items-center'>
-          <strong className='text-left ml-20 p-6 text-xl'>Cidades Próximas </strong>
-          {loader()}
+      {!!distances.length && 
+        (
+        <div className='flex flex-col w-full h-full'>
+          <div className='flex items-center'>
+            <strong className='text-left ml-20 p-6 pr-2 text-xl'>Cidades Próximas </strong>
+            {loader()}
+          </div>
+          <NearestCitiesPlotter distances={distances}/>
         </div>
-        <NearestCitiesPlotter distances={distances}/>
-      </div>
+        )
+      }
     </div>
   );
 }

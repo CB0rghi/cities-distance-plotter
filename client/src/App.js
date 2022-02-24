@@ -22,7 +22,6 @@ function App() {
         (
         <div className='flex flex-col w-full h-full'>
           <div className='flex items-center'>
-            <strong className='text-left ml-20 p-6 pr-2 text-xl'>Cidades Próximas </strong>
             {loader()}
           </div>
           <NearestCitiesPlotter distances={distances}/>

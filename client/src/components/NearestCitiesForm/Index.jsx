@@ -4,6 +4,21 @@ import useCityStore from '../../stores/cityStore'
 import { getNearestCities } from '../../services/city.js'
 import CitiesSelect from '../CitiesSelect/CitiesSelect.jsx'
 
+const node = ({ distance, next }) => ({ distance, next })
+
+const routes = []
+const findCityDistances = (distancesArray, city) => {
+  return distancesArray.filter(distance => distance.cityA === city || distance.cityB === city)
+}
+const calculateRoutes = (distancesArray, from, to) => {
+  const fromDistances = findCityDistances(from)
+
+  
+}
+
+const from = 'Rio Claro'
+const to = 'Sao Paulo'
+
 const Main = () => {
   const [ nearestCount, setNearestCount ] = useState(10)
   const { setDistances, setLoading, selectedCity } = useCityStore(state => ({

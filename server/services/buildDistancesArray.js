@@ -4,7 +4,7 @@ import getCitiesArray from './getCities.js'
 
 const buildDistancesArray = async (state) => {
 	const stateCities = await getCitiesArray(state)
-	const distancesArray = calculateDistancesArray(stateCities)
+	const distancesArray = calculateDistancesArray(stateCities.splice(0, 20))
 	saveDistancesToDisk(distancesArray, state)
 	return distancesArray
 }

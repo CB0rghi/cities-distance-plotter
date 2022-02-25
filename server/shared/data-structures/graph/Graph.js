@@ -15,7 +15,10 @@ export default class Graph {
    * @returns {Graph}
    */
   addVertex(newVertex) {
-    this.vertices[newVertex.getKey()] = newVertex;
+    if (!this.vertices[newVertex.getKey()]) {
+      this.vertices[newVertex.getKey()] = newVertex;
+    }
+
 
     return this;
   }
@@ -57,7 +60,7 @@ export default class Graph {
   addEdge(edge) {
     // Try to find and end start vertices.
     let startVertex = this.getVertexByKey(edge.startVertex.getKey());
-    let endVertex = this.getVertexByKey(edge.endVertex.getKey());
+    let endVertex = this.getVertexByKey(edge.endVertex.getKey());    
 
     // Insert start vertex if it wasn't inserted.
     if (!startVertex) {
@@ -73,7 +76,7 @@ export default class Graph {
 
     // Check if edge has been already added.
     if (this.edges[edge.getKey()]) {
-      throw new Error('Edge has already been added before');
+      // console.log('Edge has already been added before');
     } else {
       this.edges[edge.getKey()] = edge;
     }

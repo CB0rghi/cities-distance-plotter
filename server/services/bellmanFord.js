@@ -22,14 +22,14 @@ export default function bellmanFord(graph, startVertex) {
 		// During each iteration go through all vertices.
 		Object.keys(distances).forEach((vertexKey) => {
 			const vertex = graph.getVertexByKey(vertexKey)
-
 			// Go through all vertex edges.
 			graph.getNeighbors(vertex).forEach((neighbor) => {
 				const edge = graph.findEdge(vertex, neighbor)
 				// Find out if the distance to the neighbor is shorter in this iteration
 				// then in previous one.
 				const distanceToVertex = distances[vertex.getKey()]
-				const distanceToNeighbor = distanceToVertex + edge.weight
+				// const distanceToNeighbor = distanceToVertex + edge.weight
+				const distanceToNeighbor = Number(distanceToVertex) + Number(edge.weight)
 				if (distanceToNeighbor < distances[neighbor.getKey()]) {
 					distances[neighbor.getKey()] = distanceToNeighbor
 					previousVertices[neighbor.getKey()] = vertex

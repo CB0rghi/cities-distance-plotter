@@ -1,71 +1,42 @@
-import Graph from "../shared/data-structures/graph/Graph.js"
-import GraphVertex from "../shared/data-structures/graph/GraphVertex.js"
-import GraphEdge from "../shared/data-structures/graph/GraphEdge.js"
-import getCitiesArray from "./getCities.js"
-import bellmanFord from "../services/bellmanFord.js"
+import Graph from '../shared/data-structures/graph/Graph.js'
+import GraphVertex from '../shared/data-structures/graph/GraphVertex.js'
+import GraphEdge from '../shared/data-structures/graph/GraphEdge.js'
+import getCitiesArray from './getCities.js'
+import getDistancesArray from './getDistancesArray.js'
+import bellmanFord from '../services/bellmanFord.js'
 
-const buildGraph = async (array, state, sourceCity) => {
-	const dirtCitiesArray = await getCitiesArray(state)
-	const cities = dirtCitiesArray.map((city) => city.nm_municipio.replace(/\s*\"*\'*\-*/g, ""))
-	const graph = new Graph(true);
+const buildGraph = (cities, routesArray) => {
+	const graph = new Graph(true)
+	// const cities = [ 'A', 'B', 'C' ]
+	cities.forEach(city => graph.addVertex(new GraphVertex(city)))
 
-	const vertices = []
+	cities.forEach((city) => {
+		const sourceVertice = graph.vertices[city]
+		const source = city
+		// const sourceRoutes = mockArray.filter(route => route.cityA === source)
+		const sourceRoutes = routesArray.filter(route => route.cityA === source)
+	
+		sourceRoutes.forEach(route => {
+			const { cityB: destination } = route
+			const destVertice = graph.getVertexByKey(destination)
+			const edge = new GraphEdge(sourceVertice, destVertice, route.distance)
+			sourceVertice.addEdge(edge)
+		})
+	})
 
-	for (let i = 0; i < cities.length; i++) {
-		// console.log(cities[i])
-		const vertex = new GraphVertex(cities[i])
-		graph.addVertex(vertex)
-		vertices.push(vertex)
-		// console.log(graph.getVertexByKey(vertex.getKey()))
-	}
-
-	for (let j = 0; j < vertices.length; j++) {
-		const filteredCitiesA = array.filter((city) => city.cityA === vertices[j].value)
-
-		for (let k = 0; k < filteredCitiesA.length; k++) {
-
-			if (vertices[k].getKey() === sourceCity) {
-				vertices.splice(k, 1)
-			}
-
-			const findedCity = filteredCitiesA.find((city) => {
-				// console.log(`(${city.cityB} === ${vertices[k]}) && (${city.cityA} === ${vertices[j]})`)
-				if ((city.cityB === vertices[k]) && (city.cityA === vertices[j])) {
-					return true
-				}
-				return false
-			})
-
-			if (findedCity) {
-				console.log(findedCity)
-				// console.log(`${vertices[j].value.city} -- ${vertices[k].value.city} -- ${findedCity.distance}`)
-				const edge = new GraphEdge(vertices[j], vertices[k], findedCity.distance)
-				const graphV = graph.getVertexByKey(vertices[j].getKey())
-				/* console.log(graphV) */
-				graphV.addEdge(edge)
-				/* console.log(graphV) */
-			}
-
-		}
-	}
 	return graph
 }
 
-const calculateMinorDistance = async (distanceArray, state, sourceCity, destinyCity) => {
-	const shortestDistance = 0
+const calculateMinorDistance = async (state, sourceCity, destinyCity) => {
+	const cities = await getCitiesArray(state)
+	const distanceArray = await getDistancesArray(state)
 	const path = `${sourceCity} -> X ... -> ${destinyCity}`
-
-	const graph = await buildGraph(distanceArray, state, sourceCity)
-	// console.log(graph)
-
+	const graph = buildGraph(cities, distanceArray)
 	const vertexA = graph.getVertexByKey(sourceCity)
-	console.log(vertexA.getEdges())
-
-	// const result = bellmanFord(graph, vertexA);
-	/* console.log(result.distances[0])
-	console.log(result) */
-
-	// console.log(graph.getAllVertices())
+	const result = bellmanFord(graph, vertexA)
+	console.log('Result\n', result) 
+	const { distances } = result
+	console.log('Minimum distance is: ', distances[destinyCity])
 
 	return {
 		from: sourceCity,
@@ -74,5 +45,7 @@ const calculateMinorDistance = async (distanceArray, state, sourceCity, destinyC
 		path
 	}
 }
+
+calculateMinorDistance('SP', 'Rio Claro', 'Bauru')
 
 export default calculateMinorDistance

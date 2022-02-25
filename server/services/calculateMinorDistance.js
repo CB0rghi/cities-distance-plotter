@@ -3,7 +3,7 @@ import GraphVertex from '../shared/data-structures/graph/GraphVertex.js'
 import GraphEdge from '../shared/data-structures/graph/GraphEdge.js'
 import getCitiesArray from './getCities.js'
 import getDistancesArray from './getDistancesArray.js'
-import bellmanFord from '../services/bellmanFord.js'
+import dijkstra from '../services/dijkstra.js'
 
 const buildGraph = (routesArray) => {
 	const graph = new Graph(true)
@@ -40,13 +40,31 @@ const buildGraph = (routesArray) => {
 const calculateMinorDistance = async (state, sourceCity, destinyCity) => {
 	const cities = await getCitiesArray(state)
 	const distanceArray = await getDistancesArray(state)
+
+	/* const d1 = distanceArray.splice(0, 100)
+	const d2 = distanceArray.splice(101, 200)
+
+	const p1 = new Promise((resolve, reject) => {
+		const graph = buildGraph(d1)
+		console.log('Distances: ', distances)
+		resolve(graph)
+	}).then((r) => console.log('asdasdasd::> ', r)) */
+
+	/* const p2 = new Promise(() => {
+		const graph = buildGraph(d2)
+		const vertexA = graph.getVertexByKey(sourceCity)
+		const result = bellmanFord(graph, vertexA)
+		const { distances, previousVertices } = result
+		console.log('Distances: ', distances)
+	}) */
+
 	const path = `${sourceCity} -> X ... -> ${destinyCity}`
 	const graph = buildGraph(distanceArray)
-	const vertexA = graph.getVertexByKey('Adamantina')
-	const result = bellmanFord(graph, vertexA)
+	const vertexA = graph.getVertexByKey(sourceCity)
+	const result = dijkstra(graph, vertexA)
 	const { distances, previousVertices } = result
-	console.log('Distances: ', distances)
-
+	console.log(`${destinyCity}`, distances[destinyCity])
+	
 	return {
 		from: sourceCity,
 		to: destinyCity,
@@ -55,6 +73,6 @@ const calculateMinorDistance = async (state, sourceCity, destinyCity) => {
 	}
 }
 
-calculateMinorDistance('SP', 'Adamantina', 'AguasDaPrata')
+calculateMinorDistance('SP', 'Cafelandia', 'AguasDaPrata')
 
 export default calculateMinorDistance

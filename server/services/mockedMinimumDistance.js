@@ -12,7 +12,6 @@ const mockArray = [
 const graph = new Graph(true)
 const cities = [ 'A', 'B', 'C' ]
 cities.forEach(city => graph.addVertex(new GraphVertex(city)))
-console.log('Vertices', graph.vertices)
 
 cities.forEach((city) => {
 	const vertice = graph.vertices[city]

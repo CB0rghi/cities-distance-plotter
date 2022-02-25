@@ -7,20 +7,34 @@ import bellmanFord from '../services/bellmanFord.js'
 
 const buildGraph = (cities, routesArray) => {
 	const graph = new Graph(true)
-	// const cities = [ 'A', 'B', 'C' ]
-	cities.forEach(city => graph.addVertex(new GraphVertex(city)))
+	// const cities = [ 'A', 'B', 'C' ]	
 
 	cities.forEach((city) => {
-		const sourceVertice = graph.vertices[city]
-		const source = city
+		const cleanedCities = city.nm_municipio.replace(/\s*\"*\'*\-*/g, "")
+		
+		graph.addVertex(new GraphVertex(cleanedCities))
+
+		const sourceVertice = graph.vertices[cleanedCities]
+		const source = cleanedCities
 		// const sourceRoutes = mockArray.filter(route => route.cityA === source)
 		const sourceRoutes = routesArray.filter(route => route.cityA === source)
-	
+
 		sourceRoutes.forEach(route => {
 			const { cityB: destination } = route
-			const destVertice = graph.getVertexByKey(destination)
-			const edge = new GraphEdge(sourceVertice, destVertice, route.distance)
-			sourceVertice.addEdge(edge)
+			const destVertice = graph.getVertexByKey(destination.replace(/\s*\"*\'*\-*/g, ""))
+
+			/* 
+			* O array cities contém cidades q o array sourceRoutes nao contém, então caso
+			* o destVertice seja undefined ele não será adicionado como vértice final do edge
+			*
+			* TO-DO: Verificar o pq dessa diferenca no array, talvez devemos corrigir os arrays
+			* ao invés de adicionar essa condição
+			*/
+			if (destVertice) {
+				const edge = new GraphEdge(sourceVertice, destVertice, route.distance)
+				sourceVertice.addEdge(edge)
+			}
+
 		})
 	})
 
@@ -33,8 +47,9 @@ const calculateMinorDistance = async (state, sourceCity, destinyCity) => {
 	const path = `${sourceCity} -> X ... -> ${destinyCity}`
 	const graph = buildGraph(cities, distanceArray)
 	const vertexA = graph.getVertexByKey(sourceCity)
+	// console.log('NEIGHBORS ', graph.getVertexByKey('Adamantina').edges)
 	const result = bellmanFord(graph, vertexA)
-	console.log('Result\n', result) 
+	// console.log('Result\n', result)
 	const { distances } = result
 	console.log('Minimum distance is: ', distances[destinyCity])
 
@@ -46,6 +61,6 @@ const calculateMinorDistance = async (state, sourceCity, destinyCity) => {
 	}
 }
 
-calculateMinorDistance('SP', 'Rio Claro', 'Bauru')
+calculateMinorDistance('SP', 'RioClaro', 'Bauru')
 
 export default calculateMinorDistance

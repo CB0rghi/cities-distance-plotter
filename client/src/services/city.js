@@ -8,6 +8,12 @@ export const getNearestCities = async (state = 'SP', city, count) => {
   return data
 }
 
+export const getShortestRoute = async (state = 'SP', source, destiny) => {
+  const route = `${baseURL}cities/shortest/${state}/${source}/${destiny}`
+  const response = await axios.get(route)
+  return response.data
+}
+
 export const getCities = async (state = 'SP') => {
   const route = `${baseURL}cities/${state}`
   const response = await axios.get(route)

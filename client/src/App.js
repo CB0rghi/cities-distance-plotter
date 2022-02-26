@@ -2,10 +2,12 @@ import React from 'react'
 import './App.css';
 import Loader from './components/Loader/Loader';
 import NearestCitiesForm from './components/NearestCitiesForm/Index';
+import NearestRoutePloter from './components/NearestRoutePlotter/NearestRoutePlotter'
 import NearestCitiesPlotter from './components/NearestCitiesPlotter/NearestCitiesPlotter'
+import NearestRouteForm from './components/NearestRouteForm/Index';
 import useCityStore from './stores/cityStore';
 function App() {
-  const { distances, loading } = useCityStore(state => ({distances: state.distances, loading: state.loading }))
+  const { shortestRoute, loading } = useCityStore(state => ({shortestRoute: state.shortestRoute, loading: state.loading }))
 
   const loader = () => {
     if(loading)
@@ -16,15 +18,15 @@ function App() {
   }
   return (
     <div className='h-screen w-full flex'>
-      <NearestCitiesForm className='w-full h-full'/>
+      <NearestRouteForm className='w-full h-full' />
       
-      {!!distances.length && 
+      {Boolean(shortestRoute) && 
         (
         <div className='flex flex-col w-full h-full'>
           <div className='flex items-center'>
             {loader()}
           </div>
-          <NearestCitiesPlotter distances={distances}/>
+          <NearestRoutePloter />
         </div>
         )
       }

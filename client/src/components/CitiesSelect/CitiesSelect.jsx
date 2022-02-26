@@ -3,10 +3,17 @@ import React, { useState, useEffect } from "react"
 import useCityStore from "../../stores/cityStore"
 import Select from 'react-select'
 
-const CitySelect = () => {
+const CitySelect = (props) => {
+  const { isSource, isDestiny } = props
   const [ cities, setCities ] = useState([])
   const [ options, setOptions ] = useState([])
-  const { selectCity } = useCityStore(state => ({ selectCity: state.selectCity, selectedCity: state.selectedCity}))
+  const { setSource, setDestiny, selectCity } = useCityStore(state => ({
+    selectCity: state.selectCity,
+
+    setSource: state.setSource,
+
+    setDestiny: state.setDestiny
+  }))
 
   useEffect(() => {
     const fetchCities = async () => {
@@ -24,7 +31,14 @@ const CitySelect = () => {
 
   const handleChange = (e) => {
     console.log('Changed', e.value)
-    selectCity(e.value)
+    if(isSource) {
+      setSource(e.value)
+    } else if (isDestiny) {
+      setDestiny(e.value)
+    }
+    else {
+      selectCity(e.value)
+    }
   }
 
   return (

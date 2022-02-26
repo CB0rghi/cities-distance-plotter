@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "serve": "node start.js",
+    "serve": "node index.js",
     "test": "curl localhost:3010/nearest-cities/Piracicaba/10"
   },
   "repository": {

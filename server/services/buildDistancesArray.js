@@ -4,7 +4,7 @@ import getCitiesArray from './getCities.js'
 
 const closestCitiesCount = 10
 
-const filterRoutesByClosesCities = async (cities, distances) => {
+const filterRoutesByClosestCities = async (cities, distances) => {
 	let newDistances = []
 	cities.forEach(city => {
 		let cityDistances = distances.filter(route => route.cityA === city.nm_municipio)
@@ -28,14 +28,13 @@ const buildDistancesArray = async (state) => {
 	const distancesArray = calculateDistancen2(stateCities)
 	console.timeEnd(`Calculate Distances n² (${size} cities)`)
 
+	console.time('Filter by closest cities')
+	const closestRoutesArray = await filterRoutesByClosestCities(stateCities, distancesArray)	
+	console.timeEnd('Filter by closest cities')
 
 	console.time('Save distances to disk')
-	saveDistancesToDisk(distancesArray, state)
+	saveDistancesToDisk(closestRoutesArray, state)
 	console.timeEnd('Save distances to disk')
-
-	console.time('Filter by closest cities')
-	const closestRoutesArray = await filterRoutesByClosesCities(stateCities, distancesArray)	
-	console.timeEnd('Filter by closest cities')
 
 	return closestRoutesArray 
 }

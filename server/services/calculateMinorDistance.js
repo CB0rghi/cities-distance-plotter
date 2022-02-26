@@ -4,8 +4,6 @@ import GraphEdge from '../shared/data-structures/graph/GraphEdge.js'
 import getDistancesArray from './getDistancesArray.js'
 import dijkstra from '../services/dijkstra.js'
 
-const clearString = (str) => (str.replace(/\s*"*'*-*/g, ''))
-
 const buildGraph = (routesArray) => {
 	const graph = new Graph(true)
 	const addVertices = () => {
@@ -47,23 +45,14 @@ const ignoreDirectRoute = (distances, source, destiny) => {
 }
 
 const calculateMinorDistance = async (state, source, destiny) => {
-	const clearSource = clearString(source)
-	const clearDestiny = clearString(destiny)
 
 	let distances = await getDistancesArray(state)
 	distances = ignoreDirectRoute(distances, source, destiny)
 
-	const cleanedDistances = distances.map((route) => ({
-		distance: route.distance,
-		cityA: clearString(route.cityA),
-		cityB: clearString(route.cityB)		
-	}))
-
 	console.time('Build Graph')
-	const graph = buildGraph(cleanedDistances)
-	// TODO: save graph on disk to reuse it
+	const graph = buildGraph(distances)
 	console.timeEnd('Build Graph')
-	const vertexA = graph.getVertexByKey(clearSource)
+	const vertexA = graph.getVertexByKey(source)
 	console.time('Dijkstra')
 	const result = dijkstra(graph, vertexA)
 	console.timeEnd('Dijkstra')
@@ -71,19 +60,20 @@ const calculateMinorDistance = async (state, source, destiny) => {
 	const { previousVertices } = result
 
 	const buildPreviousPath = (currentCity, path) => {
-		if(currentCity === clearSource)
+		if(currentCity === source)
 			return path
 		const previousCity = previousVertices[currentCity].value
+
 		return `${buildPreviousPath(previousCity, path)} => ${currentCity}`
 	}
 
 	const getFullPath = () => {
-		const lastCity = previousVertices[clearDestiny].value
-		const previousPath = buildPreviousPath(lastCity, clearSource)
+		const lastCity = previousVertices[destiny].value
+		const previousPath = buildPreviousPath(lastCity, source)
 		return `${previousPath} => ${destiny}`
 	}
 
-	const distance = result.distances[clearDestiny]
+	const distance = result.distances[destiny]
 	const path = getFullPath()
 
 	return {

@@ -5,6 +5,8 @@ import getCitiesArray from './getCities.js'
 import getDistancesArray from './getDistancesArray.js'
 import dijkstra from '../services/dijkstra.js'
 
+const clearString = (str) => (str.replace(/\s*"*'*-*/g, ''))
+
 const buildGraph = (routesArray) => {
 	const graph = new Graph(true)
 
@@ -37,65 +39,63 @@ const buildGraph = (routesArray) => {
 	return graph
 }
 
-const calculateMinorDistance = async (state, sourceCity, destinyCity) => {
+const ignoreDirectRoute = (distances, source, destiny) => {
+	return distances.filter((distance) =>
+		!(
+			(
+				distance.cityA === source && 
+				distance.cityB === destiny
+			) 
+			||
+			(
+				distance.cityA === destiny &&
+				distance.cityB === source
+			)
+		)
+	)
+}
+
+const calculateMinorDistance = async (state, source, destiny) => {
 	// const cities = await getCitiesArray(state)
-	const distanceArray = await getDistancesArray(state)
-
-	/* const d1 = distanceArray.splice(0, 100)
-	const d2 = distanceArray.splice(101, 200)
-
-	const p1 = new Promise((resolve, reject) => {
-		const graph = buildGraph(d1)
-		console.log('Distances: ', distances)
-		resolve(graph)
-	}).then((r) => console.log('asdasdasd::> ', r)) */
-
-	/* const p2 = new Promise(() => {
-		const graph = buildGraph(d2)
-		const vertexA = graph.getVertexByKey(sourceCity)
-		const result = bellmanFord(graph, vertexA)
-		const { distances, previousVertices } = result
-		console.log('Distances: ', distances)
-	}) */
+	let distances = await getDistancesArray(state)
+	distances = ignoreDirectRoute(distances, source, destiny)
 
 	console.time('Build Graph')
-	const graph = buildGraph(distanceArray)
+	const graph = buildGraph(distances)
+	// TODO: save graph on disk to reuse it
 	console.timeEnd('Build Graph')
-	const vertexA = graph.getVertexByKey(sourceCity)
+	const vertexA = graph.getVertexByKey(source)
 	console.time('Dijkstra')
 	const result = dijkstra(graph, vertexA)
 	console.timeEnd('Dijkstra')
-	const printPath = (currentCity, path) => {
-		if(currentCity === sourceCity)
+
+	const { previousVertices } = result
+
+	const buildPreviousPath = (currentCity, path) => {
+		if(currentCity === source)
 			return path
 		const previousCity = previousVertices[currentCity].value
-		return `${path} => ${printPath(previousCity, path)}`
+		return `${buildPreviousPath(previousCity, path)} => ${currentCity}`
 	}
-	const { distances, previousVertices } = result
-	// console.log('Previous ', previousVertices[destinyCity])
-	// console.log('Distance', distances[destinyCity])
-	const x = printPath(previousVertices[destinyCity.replace(' ','')].value, destinyCity)
-	console.log('X', x)
 
+	const getFullPath = () => {
+		const lastCity = previousVertices[clearString(destiny)].value
+		const previousPath = buildPreviousPath(lastCity, source)
+		return `${previousPath} => ${destiny}`
+	}
 
-	let path = `${destinyCity}`
-	const previousVertice = previousVertices[destinyCity.replace(' ','')].value
-	path = `${previousVertice} => ${path}`
-	const pp = previousVertices[previousVertice]
-	path = `${pp} => ${path}`
-	console.log('Path', path)
+	const distance = result.distances[clearString(destiny)]
+	const path = getFullPath()
+	// TODO: Save minimum path to file (to prevent it from caculating again in the future)
+	console.log(`Minimum route from ${source} to ${destiny}\n${path} (${distance} km)`)
 
-
-	// console.log(`${destinyCity}`, distances)
-	
 	return {
-		from: sourceCity,
-		to: destinyCity,
+		from: source,
+		to: destiny,
 		distance: 0,
 		path
 	}
 }
 
-calculateMinorDistance('SP', 'Adamantina', 'Aguai')
-
+calculateMinorDistance('SP', 'Araraquara', 'Guaimbe')
 export default calculateMinorDistance

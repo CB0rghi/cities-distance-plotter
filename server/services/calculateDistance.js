@@ -30,6 +30,36 @@ export const getDistanceFromTwoCities = ({ cityA, cityB }) => {
 	return getDistanceFromTwoPoints({ latA, latB, longA, longB })
 }
 
+export const calculateDistancen2 = (cities) => {
+	const distancesArray = []
+	const addDistance = (distance, cityA, cityB) => {
+		const distanceObj = {
+			cityA: cityA.nm_municipio,
+			cityB: cityB.nm_municipio,
+			latA: cityA.lat_municipio,
+			longA: cityA.long_municipio,
+			latB: cityB.lat_municipio,
+			longB: cityB.long_municipio,
+			distance 
+		}
+		distancesArray.push(distanceObj)
+	}
+
+	for(let i = 0; i < cities.length; i++)
+	{
+		const source = cities[i]
+		for(let j = 0; j < cities.length; j++)
+		{
+			if(i !== j) {
+				const destination = cities[j]
+				const distance = getDistanceFromTwoCities({ cityA: source, cityB: destination })
+				addDistance(distance, source, destination)
+			}
+		}
+	}
+	return distancesArray
+}
+
 export const calculateDistancesArray = (cities) => {
 	const distancesArray = []
 	const addDistance = (distance, cityA, cityB) => {

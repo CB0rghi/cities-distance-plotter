@@ -1,7 +1,7 @@
-import Graph from '../shared/data-structures/graph/Graph.js'
+import Graph from '../model/data-structures/graph/Graph.js'
 import bellmanFord from './bellmanFord.js'
-import GraphEdge from '../shared/data-structures/graph/GraphEdge.js'
-import GraphVertex from '../shared/data-structures/graph/GraphVertex.js'
+import GraphEdge from '../model/data-structures/graph/GraphEdge.js'
+import GraphVertex from '../model/data-structures/graph/GraphVertex.js'
 
 const mockArray = [
 	{ cityA: 'A', cityB: 'B', distance: 1 },

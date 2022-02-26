@@ -12,8 +12,7 @@ const findCityDistances = (distancesArray, city) => {
 }
 const calculateRoutes = (distancesArray, from, to) => {
   const fromDistances = findCityDistances(from)
-
-  
+    
 }
 
 const from = 'Rio Claro'

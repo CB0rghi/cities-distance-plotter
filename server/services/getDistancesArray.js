@@ -8,7 +8,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const getDistancesArray = async (state) => {
 	const filePath = `${__dirname}/../data/distances/${state}.csv`
 	if(fs.existsSync(filePath)) {
-		return await readContent(`distances/${state}.csv`)
+		return buildDistancesArray(state)
+	//	return await readContent(`distances/${state}.csv`)
 	}  
 	return buildDistancesArray(state)
 }

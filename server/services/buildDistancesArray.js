@@ -3,12 +3,12 @@ import saveDistancesToDisk from './saveDistancesToDisk.js'
 import getCitiesArray from './getCities.js'
 
 const buildDistancesArray = async (state) => {
-	const size = 200
 	console.time('Get cities array')
 	let stateCities = await getCitiesArray(state)
 	console.timeEnd('Get cities array')
-	stateCities = stateCities.splice(0, size)
+	const size = stateCities.length
 	console.time(`Calculate Distances n² (${size} cities)`)
+	// TODO: Migrate from n² to middle method (but needs to build the same array)
 	const distancesArray = calculateDistancen2(stateCities)
 	console.timeEnd(`Calculate Distances n² (${size} cities)`)
 	console.time('Save distances to disk')

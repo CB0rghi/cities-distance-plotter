@@ -6,6 +6,7 @@
 export default function bellmanFord(graph, startVertex) {
 	const distances = {}
 	const previousVertices = {}
+	let relaxCount = 0
 
 	// Init all distances with infinity assuming that currently we can't reach
 	// any of the vertices except start one.
@@ -30,16 +31,20 @@ export default function bellmanFord(graph, startVertex) {
 				const distanceToVertex = distances[vertex.getKey()]
 				// const distanceToNeighbor = distanceToVertex + edge.weight
 				const distanceToNeighbor = Number(distanceToVertex) + Number(edge.weight)
+
+				// relaxação -> add metrica de contagem
 				if (distanceToNeighbor < distances[neighbor.getKey()]) {
+					relaxCount++
 					distances[neighbor.getKey()] = distanceToNeighbor
 					previousVertices[neighbor.getKey()] = vertex
 				}
 			})
 		})
 	}
-
+	
 	return {
 		distances,
 		previousVertices,
+		relaxCount
 	}
 }

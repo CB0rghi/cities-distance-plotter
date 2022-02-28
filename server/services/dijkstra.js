@@ -18,6 +18,7 @@ export default function dijkstra(graph, startVertex) {
 	const visitedVertices = {}
 	const previousVertices = {}
 	const queue = new PriorityQueue()
+	let relaxCount = 0
 
 	// Init all distances with infinity assuming that currently we can't reach
 	// any of the vertices except the start one.
@@ -49,6 +50,7 @@ export default function dijkstra(graph, startVertex) {
 
 				// If we've found shorter path to the neighbor - update it.
 				if (distanceToNeighborFromCurrent < existingDistanceToNeighbor) {
+					relaxCount++
 					distances[neighbor.getKey()] = distanceToNeighborFromCurrent
 
 					// Change priority of the neighbor in a queue since it might have became closer.
@@ -71,10 +73,13 @@ export default function dijkstra(graph, startVertex) {
 		visitedVertices[currentVertex.getKey()] = currentVertex
 	}
 
+	
+
 	// Return the set of shortest distances to all vertices and the set of
 	// shortest paths to all vertices in a graph.
 	return {
 		distances,
 		previousVertices,
+		relaxCount
 	}
 }

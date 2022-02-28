@@ -4,7 +4,7 @@ import GraphEdge from '../shared/data-structures/graph/GraphEdge.js'
 import getDistancesArray from './getDistancesArray.js'
 import dijkstra from '../services/dijkstra.js'
 
-const buildGraph = (routesArray) => {
+export const buildGraph = (routesArray) => {
 	const graph = new Graph(true)
 	const addVertices = () => {
 		routesArray.forEach(({ cityA }) => {
@@ -28,7 +28,7 @@ const buildGraph = (routesArray) => {
 	return graph
 }
 
-const ignoreDirectRoute = (distances, source, destiny) => {
+export const ignoreDirectRoute = (distances, source, destiny) => {
 	return distances.filter((distance) =>
 		!(
 			(

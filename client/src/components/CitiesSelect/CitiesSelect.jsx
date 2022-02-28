@@ -30,7 +30,7 @@ const CitySelect = (props) => {
   }, [cities])
 
   const handleChange = (e) => {
-    console.log('Changed', e.value)
+    // console.log('Changed', e.value)
     if(isSource) {
       setSource(e.value)
     } else if (isDestiny) {

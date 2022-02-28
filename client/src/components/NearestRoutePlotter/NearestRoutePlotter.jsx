@@ -4,16 +4,18 @@ import useCityStore from "../../stores/cityStore";
 
 export const background = '#272b4d';
 
+const onLoad = (reactFlowInstance) => reactFlowInstance.fitView();
+
 const ShortestRoutePlotter = () => {
-  const { loading, sourceCity, shortestRoute} = useCityStore(state => ({ sourceCity: state.sourceCity, loading: state.loading, shortestRoute: state.shortestRoute}))
+  const { loading, sourceCity, shortestRoute, distances } = useCityStore(state => ({ sourceCity: state.sourceCity, loading: state.loading, shortestRoute: state.shortestRoute, distances: state.distances }))
   const [elements, setElements] = useState([])
 
   useEffect(() => {
     if(!shortestRoute) return
-    const baseX = 50 
-    const baseY = 10
-    const dislocationX = 180
-    const dislocationY = 80
+    const baseX = 50
+    const baseY = 150
+    const dislocationX = 250
+    const dislocationY = 100
     const cities = shortestRoute.split('=>').map(city => city.trim())
 
     const firstNode = cities[0]
@@ -41,7 +43,7 @@ const ShortestRoutePlotter = () => {
       let currentY = baseY
       let positive = true
 
-      for(let i = 1; i < cities.length; i++) {
+      for (let i = 1; i < cities.length; i++) {
         const current = cities[i]
         if(i % 5 !== 0) {
           if(positive) {
@@ -62,25 +64,26 @@ const ShortestRoutePlotter = () => {
           target: i.toString(),
           style: { stroke: '#000' },
           type: 'smoothstep',
-          animated: true
+          animated: true,
+          label: `${Number(distances[cities.length - 1 - i]).toFixed(2)} Km`,
         }
         elements.push(edge)
-      }      
+      }
       console.log('Elements', elements)
       setElements(elements)
     }
     mountElements()
-  }, [shortestRoute, sourceCity])
+  }, [shortestRoute, sourceCity, distances])
 
   const render = () => {
-    if(loading || elements.length === 0) return null
-    return <ReactFlow elements={elements} />
+    if (loading || elements.length === 0) return null
+    return <ReactFlow elements={elements} onLoad={onLoad} />
   }
 
   return (
-  <div className="w-full h-full">
-    {render()}
-  </div>
+    <div className="w-full h-full">
+      {render()}
+    </div>
   )
 }
 export default ShortestRoutePlotter

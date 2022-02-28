@@ -13,9 +13,9 @@ const buildGraph = (routesArray) => {
 	}
 
 	const addEdges = () => {
-		for(let i = 0; i < routesArray.length; i++) {
+		for (let i = 0; i < routesArray.length; i++) {
 			const route = routesArray[i]
-			const { cityA, cityB, distance } = route 
+			const { cityA, cityB, distance } = route
 			const sourceVertice = graph.vertices[cityA]
 			const destVertice = graph.getVertexByKey(cityB)
 			const edge = new GraphEdge(sourceVertice, destVertice, distance)
@@ -32,9 +32,9 @@ const ignoreDirectRoute = (distances, source, destiny) => {
 	return distances.filter((distance) =>
 		!(
 			(
-				distance.cityA === source && 
+				distance.cityA === source &&
 				distance.cityB === destiny
-			) 
+			)
 			||
 			(
 				distance.cityA === destiny &&
@@ -59,15 +59,24 @@ const calculateMinorDistance = async (state, source, destiny) => {
 
 	const { previousVertices } = result
 
-	const buildPreviousPath = (currentCity, path) => {
-		if(currentCity === source)
-			return path
-		const previousCity = previousVertices[currentCity].value
+	const previousDistances = []
 
+	const getDistance = (previousEdges, currentCity) => {
+		return previousEdges.find((edge) => edge.endVertex.value == currentCity).weight
+	}
+
+	const buildPreviousPath = (currentCity, path) => {
+		if (currentCity === source) {
+			return path
+		}
+		const previousCity = previousVertices[currentCity].value
+		previousDistances.push(getDistance(previousVertices[currentCity].getEdges(), currentCity))
 		return `${buildPreviousPath(previousCity, path)} => ${currentCity}`
 	}
 
+
 	const getFullPath = () => {
+		previousDistances.push(getDistance(previousVertices[destiny].getEdges(), destiny))
 		const lastCity = previousVertices[destiny].value
 		const previousPath = buildPreviousPath(lastCity, source)
 		return `${previousPath} => ${destiny}`
@@ -76,11 +85,21 @@ const calculateMinorDistance = async (state, source, destiny) => {
 	const distance = result.distances[destiny]
 	const path = getFullPath()
 
+	console.log({
+		from: source,
+		to: destiny,
+		distance,
+		path,
+		previousDistances
+	})
+	console.log('--------------')
+
 	return {
 		from: source,
 		to: destiny,
 		distance,
-		path
+		path,
+		previousDistances
 	}
 }
 

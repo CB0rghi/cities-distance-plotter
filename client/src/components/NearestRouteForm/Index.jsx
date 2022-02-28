@@ -5,9 +5,11 @@ import { getShortestRoute } from '../../services/city.js'
 import CitiesSelect from '../CitiesSelect/CitiesSelect.jsx'
 
 const NearestRouteForm = () => {
-  const { setShortestRoute, setLoading, sourceCity, destinyCity} = useCityStore(state => ({
+  const { setShortestRoute, setLoading, setDistances, setTotalDistance, sourceCity, destinyCity} = useCityStore(state => ({
     setShortestRoute: state.setShortestRoute,
     setLoading: state.setLoading,
+    setDistances: state.setDistances,
+    setTotalDistance: state.setTotalDistance,
 
     sourceCity: state.sourceCity,
     destinyCity: state.destinyCity
@@ -18,6 +20,9 @@ const NearestRouteForm = () => {
       setLoading(true)
       const response = await getShortestRoute('SP', sourceCity, destinyCity)
       setShortestRoute(response.path)
+      // console.log(response)
+      setDistances(response.previousDistances)
+      setTotalDistance(response.distance)
       setLoading(false)
   }
 
@@ -31,7 +36,7 @@ const NearestRouteForm = () => {
   }
 
   return (
-    <div className="w-full max-w-xs">
+    <div className="w-full max-w-xs" style={{ position: 'absolute', zIndex: 1000 }}>
       <form onSubmit={handleSubmit} className="bg-teal-400 shadow-md rounded p-4">
         <div className='mb-4'>
         </div>

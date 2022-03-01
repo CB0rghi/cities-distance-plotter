@@ -69,7 +69,6 @@ const ShortestRoutePlotter = () => {
         }
         elements.push(edge)
       }
-      console.log('Elements', elements)
       setElements(elements)
     }
     mountElements()

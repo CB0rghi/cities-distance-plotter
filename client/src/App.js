@@ -15,7 +15,11 @@ function App() {
   }
   return (
     <div className='h-screen w-full flex'>
-      <NearestRouteForm className='h-full' />
+      <div className='w-full absolute text-center pt-24'>
+       <NearestRouteForm className='h-full w-full absolute' />
+        {totalDistance ? <span className='text-3xl font-bold'> Distância Total: {`${Number(totalDistance).toFixed(2)} Km`}</ span> : null}
+      </div>
+      
 
       {Boolean(shortestRoute) &&
         (
@@ -27,11 +31,6 @@ function App() {
           </div>
         )
       }
-      <div className='h-full flex' style={{ position: 'absolute', width: '100%', justifyContent: 'flex-end', zIndex: '-1' }}>
-        <div style={{ marginRight: 5 }}> Distância total: </div>
-        <div> {` ${Number(totalDistance).toFixed(2)} Km`} </div>
-      </div>
-
     </div>
   );
 }

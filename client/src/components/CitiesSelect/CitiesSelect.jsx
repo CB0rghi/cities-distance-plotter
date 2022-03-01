@@ -42,7 +42,7 @@ const CitySelect = (props) => {
   }
 
   return (
-    <div className="inline-block relative w-64">
+    <div className="inline-block relative w-full">
       <Select options={options} placeholder="Escolha uma cidade" onChange={handleChange}/>
     </div>
   )

@@ -36,24 +36,25 @@ const NearestRouteForm = () => {
   }
 
   return (
-    <div className="w-full max-w-xs" style={{ position: 'absolute', zIndex: 1000 }}>
-      <form onSubmit={handleSubmit} className="bg-teal-400 shadow-md rounded p-4">
-        <div className='mb-4'>
+      <div className="w-full max-w-sm top-0" style={{ position: 'absolute', zIndex: 1000 }}>
+      <form onSubmit={handleSubmit} className="bg-teal-400 shadow-md rounded p-8 flex flex-col">
+        <div className='mb-4 w-full text-left text-sm'>
+          Escolha duas cidades do estado de São Paulo
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="city">
-            Source
+        <div className="mb-4 flex flex-col">
+          <label className="block text-gray-700 text-sm font-bold mb-2 text-left" htmlFor="city">
+          Origem 
           </label>
           <CitiesSelect isSource />
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="city">
-            Destiny
+        <div className="mb-4 flex flex-col">
+          <label className="block text-gray-700 text-sm font-bold mb-2 text-left" htmlFor="city">
+            Destino 
           </label>
           <CitiesSelect isDestiny />
         </div>
         
-        <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"' type='submit'>Search!</button>
+        <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"' type='submit'>Calcular</button>
       </form>
     </div>
   )

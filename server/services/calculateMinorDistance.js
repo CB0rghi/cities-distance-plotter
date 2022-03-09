@@ -45,7 +45,6 @@ export const ignoreDirectRoute = (distances, source, destiny) => {
 }
 
 const calculateMinorDistance = async (state, source, destiny) => {
-
 	let distances = await getDistancesArray(state)
 	distances = ignoreDirectRoute(distances, source, destiny)
 
@@ -58,7 +57,6 @@ const calculateMinorDistance = async (state, source, destiny) => {
 	console.timeEnd('Dijkstra')
 
 	const { previousVertices } = result
-
 	const previousDistances = []
 
 	const getDistance = (previousEdges, currentCity) => {
@@ -73,7 +71,6 @@ const calculateMinorDistance = async (state, source, destiny) => {
 		previousDistances.push(getDistance(previousVertices[currentCity].getEdges(), currentCity))
 		return `${buildPreviousPath(previousCity, path)} => ${currentCity}`
 	}
-
 
 	const getFullPath = () => {
 		previousDistances.push(getDistance(previousVertices[destiny].getEdges(), destiny))

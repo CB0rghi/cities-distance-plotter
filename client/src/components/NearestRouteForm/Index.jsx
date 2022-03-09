@@ -16,7 +16,7 @@ const NearestRouteForm = () => {
   }))
 
   const loadShortestRoute = async () => {
-      if(!sourceCity || !destinyCity) return
+      if(!sourceCity || !destinyCity || sourceCity === destinyCity) return
       setLoading(true)
       const response = await getShortestRoute('SP', sourceCity, destinyCity)
       setShortestRoute(response.path)

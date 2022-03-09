@@ -28,25 +28,8 @@ export const buildGraph = (routesArray) => {
 	return graph
 }
 
-export const ignoreDirectRoute = (distances, source, destiny) => {
-	return distances.filter((distance) =>
-		!(
-			(
-				distance.cityA === source &&
-				distance.cityB === destiny
-			)
-			||
-			(
-				distance.cityA === destiny &&
-				distance.cityB === source
-			)
-		)
-	)
-}
-
 const calculateMinorDistance = async (state, source, destiny) => {
 	let distances = await getDistancesArray(state)
-	distances = ignoreDirectRoute(distances, source, destiny)
 
 	console.time('Build Graph')
 	const graph = buildGraph(distances)

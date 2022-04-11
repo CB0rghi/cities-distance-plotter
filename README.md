@@ -11,3 +11,6 @@ npm run start-server
 ```
 npm run start-client
 ```
+
+* Access http://localhost:3000 and select two cities
+* All done!
